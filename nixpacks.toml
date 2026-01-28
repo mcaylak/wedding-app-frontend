@@ -1,5 +1,8 @@
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["npm ci", "npm run build"]
 
 [phases.start]
 cmd = "npm start"
+
+[variables]
+PORT = "3000"
