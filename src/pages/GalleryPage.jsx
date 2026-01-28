@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PhotoGrid from '../components/PhotoGrid';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
   const [photos, setPhotos] = useState([]);

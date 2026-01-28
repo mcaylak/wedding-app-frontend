@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import '../styles/FaceSearchScreen.css';
 import Pagination from './Pagination';
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 const FaceSearchScreen = ({ 
   token, 

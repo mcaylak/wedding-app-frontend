@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import PhotoGrid from '../components/PhotoGrid';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
 const FaceSearchPage = ({ authToken, weddingId }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
@@ -44,7 +46,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
       formData.append('size', '12');
       
       console.log('Sending face search request to backend...');
-      const response = await fetch(`http://localhost:8080/api/face/search/${weddingId}`, {
+      const response = await fetch(`${API_BASE_URL}/face/search/${weddingId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -61,7 +63,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
         if (results.content && results.content.length > 0) {
           const formattedResults = results.content.map((photo) => ({
             id: photo.id,
-            url: `http://localhost:8080/api/photos/download/${photo.id}?token=${authToken}`,
+            url: `${API_BASE_URL}/photos/download/${photo.id}?token=${authToken}`,
             title: photo.fileName || `Photo ${photo.id}`,
             confidence: 0.85 // Default confidence since backend doesn't return it
           }));
