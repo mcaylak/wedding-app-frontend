@@ -7,6 +7,15 @@ export default defineConfig({
     port: 3001,
     open: true,
   },
+  preview: {
+    host: '0.0.0.0',
+    port: process.env.PORT || 3000,
+    allowedHosts: [
+      'wedding-app-frontend-production.up.railway.app',
+      'localhost',
+      '127.0.0.1'
+    ]
+  },
   build: {
     outDir: 'dist',
   },
