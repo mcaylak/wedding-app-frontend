@@ -206,9 +206,6 @@ const AdminPage = () => {
               </button>
             </div>
           </form>
-          <div className="text-center text-xs text-gray-500">
-            Default: admin / admin123
-          </div>
         </div>
       </div>
     );
@@ -307,8 +304,8 @@ const AdminPage = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div className="md:col-span-3">
                         <label className="font-medium text-gray-700">Wedding ID:</label>
                         <div className="flex items-center space-x-2">
                           <code className="bg-gray-100 px-2 py-1 rounded text-xs">
@@ -323,23 +320,6 @@ const AdminPage = () => {
                         </div>
                       </div>
 
-                      {wedding.qrCodeData && (
-                        <div>
-                          <label className="font-medium text-gray-700">QR Code URL:</label>
-                          <div className="flex items-center space-x-2">
-                            <code className="bg-gray-100 px-2 py-1 rounded text-xs truncate max-w-xs">
-                              {wedding.qrCodeData}
-                            </code>
-                            <button
-                              onClick={() => copyToClipboard(wedding.qrCodeData)}
-                              className="text-indigo-600 hover:text-indigo-800"
-                            >
-                              📋
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
                       {wedding.venue && (
                         <div>
                           <label className="font-medium text-gray-700">Venue:</label>
@@ -351,6 +331,44 @@ const AdminPage = () => {
                         <div>
                           <label className="font-medium text-gray-700">Ceremony Time:</label>
                           <p className="text-gray-600">{wedding.ceremonyTime}</p>
+                        </div>
+                      )}
+
+                      {wedding.receptionTime && (
+                        <div>
+                          <label className="font-medium text-gray-700">Reception Time:</label>
+                          <p className="text-gray-600">{wedding.receptionTime}</p>
+                        </div>
+                      )}
+
+                      {wedding.welcomeMessage && (
+                        <div className="md:col-span-3">
+                          <label className="font-medium text-gray-700">Welcome Message:</label>
+                          <p className="text-gray-600 italic">"{wedding.welcomeMessage}"</p>
+                        </div>
+                      )}
+
+                      {wedding.specialMessage && (
+                        <div className="md:col-span-3">
+                          <label className="font-medium text-gray-700">Special Message:</label>
+                          <p className="text-gray-600 italic">"{wedding.specialMessage}"</p>
+                        </div>
+                      )}
+
+                      {wedding.qrCodeData && (
+                        <div className="md:col-span-3">
+                          <label className="font-medium text-gray-700">QR Code URL:</label>
+                          <div className="flex items-center space-x-2">
+                            <code className="bg-gray-100 px-2 py-1 rounded text-xs flex-1 truncate">
+                              {wedding.qrCodeData}
+                            </code>
+                            <button
+                              onClick={() => copyToClipboard(wedding.qrCodeData)}
+                              className="text-indigo-600 hover:text-indigo-800"
+                            >
+                              📋
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
