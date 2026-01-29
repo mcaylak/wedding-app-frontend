@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import '../styles/LoginScreen.css';
 
 const LoginScreen = ({ 
@@ -8,6 +9,14 @@ const LoginScreen = ({
   loading, 
   onAuthenticate 
 }) => {
+  const passwordInputRef = useRef(null);
+
+  // Focus password input when wedding ID is pre-filled from QR code
+  useEffect(() => {
+    if (weddingId && passwordInputRef.current) {
+      passwordInputRef.current.focus();
+    }
+  }, [weddingId]);
   return (
     <div className="login-screen">
       {/* Hero Section */}
@@ -52,17 +61,25 @@ const LoginScreen = ({
             <label className="form-label">Düğün ID</label>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${weddingId ? 'bg-green-50 border-green-200' : ''}`}
               value={weddingId}
               onChange={(e) => setWeddingId(e.target.value)}
-              placeholder="Düğün ID'nizi girin"
-              disabled={loading}
+              placeholder={weddingId ? "QR kod ile otomatik dolduruldu ✓" : "Düğün ID'nizi girin"}
+              disabled={loading || !!weddingId}
+              readOnly={!!weddingId}
             />
+            {weddingId && (
+              <div className="text-sm text-green-600 mt-1 flex items-center">
+                <span className="mr-1">✓</span>
+                QR kod başarıyla okundu! Sadece erişim anahtarınızı girin.
+              </div>
+            )}
           </div>
           
           <div className="form-group">
             <label className="form-label">Erişim Anahtarı</label>
             <input
+              ref={passwordInputRef}
               type="password"
               className="form-input"
               value={weddingKey}

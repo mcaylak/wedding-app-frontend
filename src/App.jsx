@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
@@ -18,6 +18,17 @@ function App() {
   const [actualWeddingId, setActualWeddingId] = useState('');
   const [activeTab, setActiveTab] = useState('home');
   const [weddingDetails, setWeddingDetails] = useState(null);
+
+  // Check for wedding ID in URL parameters on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const weddingParam = urlParams.get('wedding');
+    if (weddingParam) {
+      setWeddingId(weddingParam);
+      // Clean the URL after setting the wedding ID
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   const fetchWeddingDetails = async (weddingId) => {
     try {
