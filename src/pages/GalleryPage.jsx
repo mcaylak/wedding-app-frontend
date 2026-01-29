@@ -7,6 +7,8 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
 
   React.useEffect(() => {
     const fetchPhotos = async () => {
@@ -65,7 +67,7 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
   };
 
   const handleDeletePhoto = async (photoId) => {
-    if (!window.confirm('Are you sure you want to delete this photo?')) {
+    if (!window.confirm('Bu fotoğrafı silmek istediğinizden emin misiniz?')) {
       return;
     }
 
@@ -82,14 +84,69 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
         // Remove photo from local state
         setPhotos(photos.filter(photo => photo.id !== photoId));
         setSelectedPhoto(null); // Close modal
-        alert('Photo deleted successfully');
+        alert('Fotoğraf başarıyla silindi');
       } else {
-        alert('Failed to delete photo');
+        alert('Fotoğraf silinirken hata oluştu');
       }
     } catch (error) {
       console.error('Error deleting photo:', error);
-      alert('Error deleting photo');
+      alert('Fotoğraf silinirken hata oluştu');
     }
+  };
+
+  const downloadPhoto = async (photo) => {
+    try {
+      const response = await fetch(photo.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = photo.title || `photo-${photo.id}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Fotoğraf indirilirken hata:', error);
+      alert('Fotoğraf indirilemedi');
+    }
+  };
+
+  const downloadAllPhotos = async () => {
+    if (photos.length === 0) return;
+    
+    const downloadPromises = photos.map(photo => downloadPhoto(photo));
+    await Promise.all(downloadPromises);
+    alert(`${photos.length} fotoğraf indiriliyor...`);
+  };
+
+  const downloadSelectedPhotos = async () => {
+    if (selectedPhotos.length === 0) {
+      alert('İndirmek için fotoğraf seçiniz');
+      return;
+    }
+    
+    const selectedPhotoObjects = photos.filter(photo => selectedPhotos.includes(photo.id));
+    const downloadPromises = selectedPhotoObjects.map(photo => downloadPhoto(photo));
+    await Promise.all(downloadPromises);
+    alert(`${selectedPhotos.length} fotoğraf indiriliyor...`);
+  };
+
+  const togglePhotoSelection = (photoId) => {
+    setSelectedPhotos(prev => 
+      prev.includes(photoId) 
+        ? prev.filter(id => id !== photoId)
+        : [...prev, photoId]
+    );
+  };
+
+  const selectAllPhotos = () => {
+    setSelectedPhotos(photos.map(photo => photo.id));
+  };
+
+  const clearSelection = () => {
+    setSelectedPhotos([]);
+    setIsSelectionMode(false);
   };
 
   return (
@@ -108,11 +165,64 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
       <div className="relative z-10 pt-6">
         <div className="text-center">
           <h1 className="text-3xl lg:text-4xl text-gray-800 font-light tracking-tight">
-            Wedding Gallery
+            Düğün Galerisi
           </h1>
           <p className="text-lg text-gray-600 font-light">
-            Our Beautiful Memories
+            Güzel Anılarımız
           </p>
+          
+          {/* Control Buttons */}
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            <button
+              onClick={downloadAllPhotos}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center space-x-2"
+              disabled={photos.length === 0}
+            >
+              <span>📥</span>
+              <span>Tümünü İndir</span>
+            </button>
+            
+            <button
+              onClick={() => setIsSelectionMode(!isSelectionMode)}
+              className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center space-x-2 ${
+                isSelectionMode 
+                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
+            >
+              <span>✓</span>
+              <span>{isSelectionMode ? 'Seçimi İptal Et' : 'Fotoğraf Seç'}</span>
+            </button>
+            
+            {isSelectionMode && (
+              <>
+                <button
+                  onClick={selectAllPhotos}
+                  className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium flex items-center space-x-2"
+                >
+                  <span>☑️</span>
+                  <span>Tümünü Seç</span>
+                </button>
+                
+                <button
+                  onClick={downloadSelectedPhotos}
+                  className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors font-medium flex items-center space-x-2"
+                  disabled={selectedPhotos.length === 0}
+                >
+                  <span>📥</span>
+                  <span>Seçilenleri İndir ({selectedPhotos.length})</span>
+                </button>
+                
+                <button
+                  onClick={clearSelection}
+                  className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium flex items-center space-x-2"
+                >
+                  <span>✕</span>
+                  <span>Seçimi Temizle</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -123,6 +233,9 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
           photos={photos}
           loading={loading}
           onPhotoClick={handlePhotoClick}
+          isSelectionMode={isSelectionMode}
+          selectedPhotos={selectedPhotos}
+          onPhotoSelect={togglePhotoSelection}
         />
       </div>
 
@@ -141,11 +254,20 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
               ✕
             </button>
 
+            {/* Download button */}
+            <button
+              onClick={(e) => { e.stopPropagation(); downloadPhoto(selectedPhoto); }}
+              className="absolute top-4 right-36 z-10 w-12 h-12 bg-green-500/20 backdrop-blur-md border border-green-300/20 rounded-full flex items-center justify-center text-green-200 hover:bg-green-500/40 transition-all duration-300"
+              title="Fotoğrafı İndir"
+            >
+              📥
+            </button>
+
             {/* Delete button */}
             <button
               onClick={(e) => { e.stopPropagation(); handleDeletePhoto(selectedPhoto.id); }}
               className="absolute top-4 right-20 z-10 w-12 h-12 bg-red-500/20 backdrop-blur-md border border-red-300/20 rounded-full flex items-center justify-center text-red-200 hover:bg-red-500/40 transition-all duration-300"
-              title="Delete photo"
+              title="Fotoğrafı Sil"
             >
               🗑️
             </button>

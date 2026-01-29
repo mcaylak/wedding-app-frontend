@@ -39,7 +39,7 @@ const AdminPage = () => {
     if (adminCredentials.username === 'admin' && adminCredentials.password === 'admin123') {
       setIsAuthenticated(true);
     } else {
-      alert('Invalid credentials');
+      alert('Geçersiz kullanıcı bilgileri');
     }
   };
 
@@ -87,9 +87,9 @@ const AdminPage = () => {
       if (response.ok) {
         await fetchWeddings();
         handleCloseForm();
-        alert(selectedWedding ? 'Wedding updated successfully!' : 'Wedding created successfully!');
+        alert(selectedWedding ? 'Düğün başarıyla güncellendi!' : 'Düğün başarıyla oluşturuldu!');
       } else {
-        alert('Error saving wedding');
+        alert('Düğün kaydedilirken hata oluştu');
       }
     } catch (error) {
       console.error('Error saving wedding:', error);
@@ -167,10 +167,10 @@ const AdminPage = () => {
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-              Admin Panel Login
+              Admin Paneli Girişi
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              Enter your credentials to access the wedding admin panel
+              Düğün admin paneline erişmek için bilgilerinizi girin
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleAdminLogin}>
@@ -180,7 +180,7 @@ const AdminPage = () => {
                   type="text"
                   required
                   className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Username"
+                  placeholder="Kullanıcı Adı"
                   value={adminCredentials.username}
                   onChange={(e) => setAdminCredentials({...adminCredentials, username: e.target.value})}
                 />
@@ -190,7 +190,7 @@ const AdminPage = () => {
                   type="password"
                   required
                   className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Password"
+                  placeholder="Şifre"
                   value={adminCredentials.password}
                   onChange={(e) => setAdminCredentials({...adminCredentials, password: e.target.value})}
                 />
@@ -202,7 +202,7 @@ const AdminPage = () => {
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Sign In
+                Giriş Yap
               </button>
             </div>
           </form>
@@ -229,10 +229,10 @@ const AdminPage = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-3xl lg:text-4xl text-gray-800 font-light tracking-tight">
-                Wedding Admin Panel
+                Düğün Admin Paneli
               </h1>
               <p className="text-lg text-gray-600 font-light">
-                Manage wedding galleries and generate QR codes
+                Düğün galerilerini yönetin ve QR kodları oluşturun
               </p>
             </div>
             <div className="flex space-x-4">
@@ -240,20 +240,20 @@ const AdminPage = () => {
                 onClick={() => setShowCreateForm(true)}
                 className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
               >
-                Create New Wedding
+                Yeni Düğün Oluştur
               </button>
               <button
                 onClick={() => setIsAuthenticated(false)}
                 className="bg-red-500 text-white px-4 py-3 rounded-lg hover:bg-red-600 transition-colors font-medium"
               >
-                Logout
+                Çıkış Yap
               </button>
             </div>
           </div>
 
           {/* Weddings List */}
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-6">
-            {loading && <div className="text-center py-8">Loading...</div>}
+            {loading && <div className="text-center py-8">Yükleniyor...</div>}
             
             {!loading && weddings.length === 0 && (
               <div className="text-center py-8 text-gray-500">

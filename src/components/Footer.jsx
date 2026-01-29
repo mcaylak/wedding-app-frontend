@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Footer = () => {
+const Footer = ({ weddingDetails }) => {
   return (
     <footer className="bg-white/95 backdrop-blur-sm border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,63 +12,63 @@ const Footer = () => {
                   <span className="text-lg">💒</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Wedding Gallery</h3>
-                  <p className="text-sm text-gray-500">Your special moments</p>
+                  <h3 className="text-lg font-semibold text-gray-900">Düğün Galerisi</h3>
+                  <p className="text-sm text-gray-500">Özel anlarınız</p>
                 </div>
               </div>
               <p className="text-gray-600 text-sm max-w-md">
-                Capture and share the beautiful memories from your wedding day. 
-                Our secure gallery keeps your precious moments safe and accessible.
+                Düğün gününüzden güzel anıları yakalayın ve paylaşın. 
+                Güvenli galerimiz kıymetli anlarınızı güvende ve erişilebilir tutar.
               </p>
             </div>
             
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Features</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">Özellikler</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center">
                   <span className="mr-2">📷</span>
-                  Photo Gallery
+                  Fotoğraf Galerisi
                 </li>
                 <li className="flex items-center">
                   <span className="mr-2">📤</span>
-                  Easy Upload
+                  Kolay Yükleme
                 </li>
                 <li className="flex items-center">
                   <span className="mr-2">🔍</span>
-                  Face Search
+                  Yüz Arama
                 </li>
                 <li className="flex items-center">
                   <span className="mr-2">🔒</span>
-                  Secure Access
+                  Güvenli Erişim
                 </li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Support</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">Destek</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>
                   <span className="flex items-center">
                     <span className="mr-2">💝</span>
-                    Forever Memories
+                    Sonsuz Anılar
                   </span>
                 </li>
                 <li>
                   <span className="flex items-center">
                     <span className="mr-2">📱</span>
-                    Mobile Friendly
+                    Mobil Uyumlu
                   </span>
                 </li>
                 <li>
                   <span className="flex items-center">
                     <span className="mr-2">⚡</span>
-                    Fast Loading
+                    Hızlı Yükleme
                   </span>
                 </li>
                 <li>
                   <span className="flex items-center">
                     <span className="mr-2">🛡️</span>
-                    Private & Secure
+                    Özel ve Güvenli
                   </span>
                 </li>
               </ul>
@@ -79,13 +79,15 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="text-center md:text-left mb-4 md:mb-0">
                 <p className="text-sm text-gray-500">
-                  © 2024 Wedding Gallery. All rights reserved.
+                  © 2024 Düğün Galerisi. Tüm hakları saklıdır.
                 </p>
               </div>
               
               <div className="flex items-center space-x-6">
                 <div className="text-sm text-gray-500">
-                  Made with ❤️ for Emma & James
+                  {weddingDetails?.brideName && weddingDetails?.groomName 
+                    ? `${weddingDetails.brideName} & ${weddingDetails.groomName} için ❤️ ile yapıldı` 
+                    : '❤️ ile yapıldı'}
                 </div>
               </div>
             </div>

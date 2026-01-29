@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const PhotoGrid = ({ photos = [], loading = false, onPhotoClick }) => {
+const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode = false, selectedPhotos = [], onPhotoSelect }) => {
   const [imageErrors, setImageErrors] = useState({});
 
   const handleImageError = (photoId) => {
@@ -30,9 +30,9 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick }) => {
     return (
       <div className="flex flex-col items-center justify-center py-20 px-6">
         <div className="text-6xl mb-6 opacity-50">📷</div>
-        <h3 className="font-playfair text-2xl text-warm-gray mb-2">No photos yet</h3>
+        <h3 className="font-playfair text-2xl text-warm-gray mb-2">Henüz fotoğraf yok</h3>
         <p className="font-inter text-warm-gray/70 text-center max-w-md">
-          Start sharing your beautiful wedding memories by uploading your first photos!
+          Güzel düğün anılarınızı paylaşmaya ilk fotoğrafınızı yükleyerek başlayın!
         </p>
       </div>
     );
@@ -43,8 +43,16 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick }) => {
       {photos.map((photo, index) => (
         <div
           key={photo.id || index}
-          className="group relative aspect-square cursor-pointer transform transition-all duration-300 hover:scale-105"
-          onClick={() => onPhotoClick && onPhotoClick(photo)}
+          className={`group relative aspect-square cursor-pointer transform transition-all duration-300 hover:scale-105 ${
+            isSelectionMode && selectedPhotos.includes(photo.id) ? 'ring-4 ring-blue-500' : ''
+          }`}
+          onClick={() => {
+            if (isSelectionMode && onPhotoSelect) {
+              onPhotoSelect(photo.id);
+            } else if (onPhotoClick) {
+              onPhotoClick(photo);
+            }
+          }}
         >
           {/* Glass card background */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-lg group-hover:shadow-2xl transition-all duration-300"></div>
@@ -84,9 +92,19 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick }) => {
                 </div>
               </div>
               
-              {/* View icon */}
+              {/* View icon or Selection checkbox */}
               <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <div className="text-white text-sm">👁️</div>
+                {isSelectionMode ? (
+                  <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                    selectedPhotos.includes(photo.id) 
+                      ? 'bg-blue-500 border-blue-500 text-white' 
+                      : 'border-white/60 bg-white/10'
+                  }`}>
+                    {selectedPhotos.includes(photo.id) && <span className="text-xs">✓</span>}
+                  </div>
+                ) : (
+                  <div className="text-white text-sm">👁️</div>
+                )}
               </div>
             </div>
           </div>

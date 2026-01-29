@@ -98,11 +98,11 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} weddingDetails={weddingDetails} />
       <main className="flex-1">
         {renderCurrentPage()}
       </main>
-      <Footer />
+      <Footer weddingDetails={weddingDetails} />
     </div>
   );
 }

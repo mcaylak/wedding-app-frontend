@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Header = ({ activeTab, setActiveTab }) => {
+const Header = ({ activeTab, setActiveTab, weddingDetails }) => {
   const tabs = [
-    { id: 'home', name: 'Home', icon: '🏠' },
-    { id: 'gallery', name: 'Gallery', icon: '📷' },
-    { id: 'upload', name: 'Upload', icon: '📤' },
-    { id: 'search', name: 'Face Search', icon: '🔍' }
+    { id: 'home', name: 'Ana Sayfa', icon: '🏠' },
+    { id: 'gallery', name: 'Galeri', icon: '📷' },
+    { id: 'upload', name: 'Fotoğraf Yükle', icon: '📤' },
+    { id: 'search', name: 'Yüz Arama', icon: '🔍' }
   ];
 
   return (
@@ -18,8 +18,8 @@ const Header = ({ activeTab, setActiveTab }) => {
               <span className="text-lg">💒</span>
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">Wedding Gallery</h1>
-              <p className="text-xs text-gray-500">Your special moments</p>
+              <h1 className="text-lg font-semibold text-gray-900">Düğün Galerisi</h1>
+              <p className="text-xs text-gray-500">Özel anlarınız</p>
             </div>
           </div>
 
@@ -46,11 +46,28 @@ const Header = ({ activeTab, setActiveTab }) => {
           {/* User Info */}
           <div className="flex items-center space-x-3">
             <div className="hidden sm:block text-right">
-              <p className="text-sm font-medium text-gray-900">Emma & James</p>
-              <p className="text-xs text-gray-500">Wedding Day</p>
+              <p className="text-sm font-medium text-gray-900">
+                {weddingDetails?.brideName && weddingDetails?.groomName 
+                  ? `${weddingDetails.brideName} & ${weddingDetails.groomName}` 
+                  : weddingDetails?.weddingName || 'Düğün Çifti'}
+              </p>
+              <p className="text-xs text-gray-500">
+                {weddingDetails?.weddingDate 
+                  ? new Date(weddingDetails.weddingDate).toLocaleDateString('tr-TR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })
+                  : 'Düğün Günü'
+                }
+              </p>
             </div>
             <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-semibold">E&J</span>
+              <span className="text-white text-xs font-semibold">
+                {weddingDetails?.brideName && weddingDetails?.groomName 
+                  ? `${weddingDetails.brideName.charAt(0)}${weddingDetails.groomName.charAt(0)}` 
+                  : '💒'}
+              </span>
             </div>
           </div>
         </div>
