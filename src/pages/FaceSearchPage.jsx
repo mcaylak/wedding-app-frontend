@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PhotoGrid from '../components/PhotoGrid';
+import Snackbar from '../components/Snackbar';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
@@ -8,7 +9,16 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [snackbar, setSnackbar] = useState({ isVisible: false, message: '', type: 'info' });
   const fileInputRef = useRef(null);
+
+  const showSnackbar = (message, type = 'info') => {
+    setSnackbar({ isVisible: true, message, type });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, isVisible: false });
+  };
 
   const handleFileSelect = (file) => {
     if (file && file.type.startsWith('image/')) {
@@ -33,7 +43,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
     });
     
     if (!authToken || !weddingId) {
-      alert('Authentication required for face search');
+      showSnackbar('Yüz arama için kimlik doğrulama gerekli', 'error');
       return;
     }
 
@@ -75,12 +85,12 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
         const errorText = await response.text();
         console.error('Face search failed:', response.status, response.statusText, errorText);
         setSearchResults([]);
-        alert(`Face search failed: ${response.statusText}`);
+        showSnackbar(`Yüz arama başarısız: ${response.statusText}`, 'error');
       }
     } catch (error) {
       console.error('Face search error:', error);
       setSearchResults([]);
-      alert(`Connection error: ${error.message}`);
+      showSnackbar(`Bağlantı hatası: ${error.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -134,10 +144,10 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
       <div className="relative z-10 pt-6">
         <div className="text-center mb-6">
           <h1 className="text-3xl lg:text-4xl text-gray-800 font-light tracking-tight">
-            Face Search
+            Yüz Arama
           </h1>
           <p className="text-lg text-gray-600 font-light">
-            Find Yourself in Our Photos
+            Fotoğraflarda Kendinizi Bulun
           </p>
         </div>
         
@@ -147,7 +157,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
               onClick={handleNewSearch}
               className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-white hover:shadow-lg transition-all duration-300"
             >
-              New Search
+              Yeni Arama
             </button>
           </div>
         )}
@@ -160,11 +170,11 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
           <div className="text-center">
             <div className="mb-8">
               <h2 className="text-2xl text-gray-800 mb-4 font-light">
-                Upload a photo to find similar faces
+                Benzer yüzleri bulmak için fotoğraf yükleyin
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Use AI-powered face recognition to discover all photos containing the same person. 
-                Simply upload a clear photo of someone's face to get started.
+                Aynı kişiyi içeren tüm fotoğrafları keşfetmek için AI destekli yüz tanıma kullanın. 
+                Başlamak için sadece birinin yüzünün net bir fotoğrafını yükleyin.
               </p>
             </div>
 
@@ -190,16 +200,16 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
               <div className="text-center">
                 <div className="text-6xl mb-4 opacity-50">🔍</div>
                 <h3 className="font-playfair text-xl text-warm-gray mb-2">
-                  Drop your photo here
+                  Fotoğrafınızı buraya bırakın
                 </h3>
                 <p className="font-inter text-warm-gray/70 mb-6">
-                  or click to browse
+                  veya göz atmak için tıklayın
                 </p>
                 <button 
                   onClick={() => fileInputRef.current?.click()}
                   className="px-8 py-3 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
                 >
-                  Choose File
+                  Dosya Seç
                 </button>
               </div>
             </div>
@@ -210,13 +220,13 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
             {/* Selected Image */}
             <div className="mb-8">
               <h2 className="font-playfair text-2xl text-warm-gray mb-4 text-center">
-                Searching for this face:
+                Bu yüz aranıyor:
               </h2>
               <div className="flex justify-center">
                 <div className="w-48 h-48 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden">
                   <img 
                     src={selectedImage.url} 
-                    alt="Selected for search"
+                    alt="Arama için seçilen"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -228,7 +238,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
               <div className="text-center py-12">
                 <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-warm-gray">
                   <div className="w-5 h-5 border-2 border-rose-gold border-t-transparent rounded-full animate-spin"></div>
-                  <span className="font-inter">Searching faces...</span>
+                  <span className="font-inter">Yüzler aranıyor...</span>
                 </div>
               </div>
             )}
@@ -238,7 +248,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
               <div>
                 <div className="mb-6">
                   <h3 className="font-playfair text-xl text-warm-gray text-center">
-                    Found {searchResults.length} matching photos
+                    {searchResults.length} eşleşen fotoğraf bulundu
                   </h3>
                 </div>
                 
@@ -254,7 +264,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
                         
                         {/* Confidence Badge */}
                         <div className="absolute top-3 right-3 px-3 py-1 bg-rose-gold/80 backdrop-blur-sm text-white text-xs font-inter rounded-full">
-                          {Math.round(photo.confidence * 100)}% match
+                          %{Math.round(photo.confidence * 100)} eşleşme
                         </div>
                         
                         {/* Photo Info */}
@@ -275,22 +285,30 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
               <div className="text-center py-12">
                 <div className="text-4xl mb-4 opacity-50">😔</div>
                 <h3 className="font-playfair text-xl text-warm-gray mb-2">
-                  No matches found
+                  Eşleşme bulunamadı
                 </h3>
                 <p className="font-inter text-warm-gray/70 mb-6">
-                  We couldn't find any photos with this face. Try uploading a different photo.
+                  Bu yüzle hiçbir fotoğraf bulamadık. Farklı bir fotoğraf yüklemeyi deneyin.
                 </p>
                 <button
                   onClick={handleNewSearch}
                   className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
                 >
-                  Try Another Photo
+                  Başka Fotoğraf Dene
                 </button>
               </div>
             )}
           </div>
         )}
       </div>
+
+      {/* Snackbar */}
+      <Snackbar
+        message={snackbar.message}
+        type={snackbar.type}
+        isVisible={snackbar.isVisible}
+        onClose={closeSnackbar}
+      />
     </div>
   );
 };

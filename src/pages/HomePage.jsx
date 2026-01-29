@@ -21,7 +21,7 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
             <h1 className="text-5xl font-light text-gray-800 mb-4 tracking-tight">
               {weddingDetails?.brideName && weddingDetails?.groomName 
                 ? `${weddingDetails.brideName} & ${weddingDetails.groomName}` 
-                : weddingDetails?.weddingName || 'Welcome to Our Gallery'}
+                : weddingDetails?.weddingName || 'Galerimize Hoş Geldiniz'}
             </h1>
             <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed">
               {weddingDetails?.welcomeMessage || 
@@ -32,20 +32,20 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-8 text-center">
               <div className="text-4xl mb-4">📷</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Photo Gallery</h3>
-              <p className="text-gray-600 text-sm">Browse our beautiful wedding memories</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Fotoğraf Galerisi</h3>
+              <p className="text-gray-600 text-sm">Güzel düğün anılarımıza göz atın</p>
             </div>
             
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-8 text-center">
               <div className="text-4xl mb-4">📤</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Upload Photos</h3>
-              <p className="text-gray-600 text-sm">Share your beautiful captures</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Fotoğraf Yükle</h3>
+              <p className="text-gray-600 text-sm">Güzel çekimlerinizi paylaşın</p>
             </div>
             
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-8 text-center">
               <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Face Search</h3>
-              <p className="text-gray-600 text-sm">Find yourself in our photos</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Yüz Arama</h3>
+              <p className="text-gray-600 text-sm">Fotoğraflarda kendinizi bulun</p>
             </div>
           </div>
 

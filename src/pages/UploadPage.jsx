@@ -124,7 +124,7 @@ const UploadPage = ({ authToken, weddingId }) => {
               results.push({
                 file: fileData.name,
                 status: 'success',
-                message: 'Upload successful',
+                message: 'Yükleme başarılı',
                 id: result.id
               });
               resolve();
@@ -149,7 +149,7 @@ const UploadPage = ({ authToken, weddingId }) => {
         results.push({
           file: fileData.name,
           status: 'error',
-          message: error.message || 'Upload failed'
+          message: error.message || 'Yükleme başarısız'
         });
       }
       
@@ -164,13 +164,13 @@ const UploadPage = ({ authToken, weddingId }) => {
     const failureCount = results.filter(r => r.status === 'error').length;
     
     if (failureCount === 0) {
-      setSnackbarMessage(`✅ All ${successCount} photos uploaded successfully!`);
+      setSnackbarMessage(`✅ Tüm ${successCount} fotoğraf başarıyla yüklendi!`);
       setSnackbarType('success');
     } else if (successCount === 0) {
-      setSnackbarMessage(`❌ All uploads failed. Please try again.`);
+      setSnackbarMessage(`❌ Tüm yüklemeler başarısız oldu. Lütfen tekrar deneyin.`);
       setSnackbarType('error');
     } else {
-      setSnackbarMessage(`⚠️ ${successCount} uploaded, ${failureCount} failed.`);
+      setSnackbarMessage(`⚠️ ${successCount} yüklendi, ${failureCount} başarısız.`);
       setSnackbarType('warning');
     }
     
@@ -211,10 +211,10 @@ const UploadPage = ({ authToken, weddingId }) => {
       <div className="relative z-10 pt-6 pb-8">
         <div className="text-center">
           <h1 className="text-3xl lg:text-4xl text-gray-800 font-light tracking-tight">
-            Upload Photos
+            Fotoğraf Yükle
           </h1>
           <p className="text-lg text-gray-600 font-light">
-            Share Your Beautiful Wedding Memories
+            Güzel Düğün Anılarınızı Paylaşın
           </p>
         </div>
       </div>
@@ -246,16 +246,16 @@ const UploadPage = ({ authToken, weddingId }) => {
             <div className="text-center">
               <div className="text-6xl mb-4 opacity-50">📤</div>
               <h3 className="text-xl text-gray-800 mb-2 font-light">
-                Drop your photos here
+                Fotoğraflarınızı buraya bırakın
               </h3>
               <p className="text-gray-600 mb-6">
-                or click to browse (supports multiple files)
+                veya göz atmak için tıklayın (çoklu dosya desteği)
               </p>
               <button 
                 onClick={() => fileInputRef.current?.click()}
                 className="px-8 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-all duration-300"
               >
-                Choose Photos
+                Fotoğraf Seç
               </button>
             </div>
           </div>
@@ -266,7 +266,7 @@ const UploadPage = ({ authToken, weddingId }) => {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl text-gray-800 font-light">
-                Selected Photos ({selectedFiles.length})
+                Seçilen Fotoğraflar ({selectedFiles.length})
               </h3>
               <div className="space-x-3">
                 <button
@@ -274,7 +274,7 @@ const UploadPage = ({ authToken, weddingId }) => {
                   disabled={uploading}
                   className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Clear All
+                  Hepsini Temizle
                 </button>
                 <button
                   onClick={uploadFiles}
@@ -288,10 +288,10 @@ const UploadPage = ({ authToken, weddingId }) => {
                   {uploading ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Uploading... {overallProgress}%
+                      Yükleniyor... {overallProgress}%
                     </div>
                   ) : (
-                    'Upload All'
+                    'Hepsini Yükle'
                   )}
                 </button>
               </div>
@@ -301,7 +301,7 @@ const UploadPage = ({ authToken, weddingId }) => {
             {uploading && (
               <div className="mb-4">
                 <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-                  <span>Overall Progress</span>
+                  <span>Genel İlerleme</span>
                   <span>{overallProgress}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
@@ -333,7 +333,7 @@ const UploadPage = ({ authToken, weddingId }) => {
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                         <div className="text-white text-center">
                           <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                          <p className="text-sm">Uploading...</p>
+                          <p className="text-sm">Yükleniyor...</p>
                         </div>
                       </div>
                     )}
@@ -400,7 +400,7 @@ const UploadPage = ({ authToken, weddingId }) => {
         {/* Upload Results */}
         {uploadResults.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg text-gray-800 font-light mb-4">Upload Results</h3>
+            <h3 className="text-lg text-gray-800 font-light mb-4">Yükleme Sonuçları</h3>
             <div className="space-y-2">
               {uploadResults.map((result, index) => (
                 <div key={index} className={`flex items-center gap-3 p-3 rounded-lg ${
@@ -421,7 +421,7 @@ const UploadPage = ({ authToken, weddingId }) => {
             
             {uploadResults.every(r => r.status === 'success') && (
               <div className="mt-4 pt-4 border-t border-gray-200 text-center">
-                <p className="text-green-600 font-medium">All photos uploaded successfully! 🎉</p>
+                <p className="text-green-600 font-medium">Tüm fotoğraflar başarıyla yüklendi! 🎉</p>
                 <p className="text-sm text-gray-600 mt-1">
                   Your photos are now available in the gallery
                 </p>
@@ -433,7 +433,7 @@ const UploadPage = ({ authToken, weddingId }) => {
         {/* Upload Guidelines */}
         {selectedFiles.length === 0 && !uploading && (
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg text-gray-800 font-light mb-4">Upload Guidelines</h3>
+            <h3 className="text-lg text-gray-800 font-light mb-4">Yükleme Rehberi</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-medium text-gray-800 mb-2">Supported Formats</h4>
@@ -441,13 +441,13 @@ const UploadPage = ({ authToken, weddingId }) => {
                   <li>• JPEG (.jpg, .jpeg)</li>
                   <li>• PNG (.png)</li>
                   <li>• WebP (.webp)</li>
-                  <li>• Maximum file size: 10MB</li>
+                  <li>• Maksimum dosya boyutu: 10MB</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium text-gray-800 mb-2">Tips for Best Results</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Use high-quality images</li>
+                  <li>• Yüksek kaliteli görüntüler kullanın</li>
                   <li>• Ensure good lighting</li>
                   <li>• Multiple photos can be selected at once</li>
                   <li>• Drag and drop supported</li>

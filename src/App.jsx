@@ -58,11 +58,11 @@ function App() {
         await fetchWeddingDetails(data.weddingId);
         setIsAuthenticated(true);
       } else {
-        alert('Invalid wedding credentials');
+        alert('Geçersiz düğün bilgileri');
       }
     } catch (error) {
       console.error('Authentication failed:', error);
-      alert('Connection error. Please try again.');
+      alert('Bağlantı hatası. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }
