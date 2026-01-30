@@ -77,7 +77,7 @@ const LoginScreen = ({
           </div>
           
           <div className="form-group">
-            <label className="form-label">Erişim Anahtarı</label>
+            <label className="form-label">Düğün Şifresi</label>
             <input
               ref={passwordInputRef}
               type="password"
