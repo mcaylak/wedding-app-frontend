@@ -12,6 +12,7 @@ export default defineConfig({
     port: process.env.PORT || 3000,
     allowedHosts: [
       'wedding-app-frontend-production.up.railway.app',
+      'myevent.gallery',
       'localhost',
       '127.0.0.1'
     ]
