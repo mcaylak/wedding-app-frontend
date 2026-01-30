@@ -13,6 +13,8 @@ export default defineConfig({
     allowedHosts: [
       'wedding-app-frontend-production.up.railway.app',
       'myevent.gallery',
+      '*.myevent.gallery',
+      '.myevent.gallery',
       'localhost',
       '127.0.0.1'
     ]
