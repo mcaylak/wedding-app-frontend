@@ -53,15 +53,15 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
           {(weddingDetails?.weddingDate || weddingDetails?.venue || weddingDetails?.ceremonyTime || weddingDetails?.receptionTime) && (
             <div className="mt-16 max-w-2xl mx-auto">
               <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-8 text-center">
-                <h3 className="text-2xl font-semibold text-gray-800 mb-6">Wedding Details</h3>
+                <h3 className="text-2xl font-semibold text-gray-800 mb-6">Düğün Detayları</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {weddingDetails?.weddingDate && (
                     <div>
                       <div className="text-2xl mb-2">📅</div>
-                      <h4 className="font-semibold text-gray-700 mb-1">Date</h4>
+                      <h4 className="font-semibold text-gray-700 mb-1">Tarih</h4>
                       <p className="text-gray-600">
-                        {new Date(weddingDetails.weddingDate).toLocaleDateString('en-US', {
+                        {new Date(weddingDetails.weddingDate).toLocaleDateString('tr-TR', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
@@ -73,7 +73,7 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
                   {weddingDetails?.venue && (
                     <div>
                       <div className="text-2xl mb-2">📍</div>
-                      <h4 className="font-semibold text-gray-700 mb-1">Venue</h4>
+                      <h4 className="font-semibold text-gray-700 mb-1">Mekan</h4>
                       <p className="text-gray-600">{weddingDetails.venue}</p>
                     </div>
                   )}
@@ -81,7 +81,7 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
                   {weddingDetails?.ceremonyTime && (
                     <div>
                       <div className="text-2xl mb-2">⛪</div>
-                      <h4 className="font-semibold text-gray-700 mb-1">Ceremony</h4>
+                      <h4 className="font-semibold text-gray-700 mb-1">Nikah</h4>
                       <p className="text-gray-600">{weddingDetails.ceremonyTime}</p>
                     </div>
                   )}
@@ -89,7 +89,7 @@ const HomePage = ({ authToken, weddingId, weddingDetails }) => {
                   {weddingDetails?.receptionTime && (
                     <div>
                       <div className="text-2xl mb-2">🎉</div>
-                      <h4 className="font-semibold text-gray-700 mb-1">Reception</h4>
+                      <h4 className="font-semibold text-gray-700 mb-1">Düğün</h4>
                       <p className="text-gray-600">{weddingDetails.receptionTime}</p>
                     </div>
                   )}
