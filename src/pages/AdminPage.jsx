@@ -24,7 +24,8 @@ const AdminPage = () => {
     venue: '',
     ceremonyTime: '',
     receptionTime: '',
-    specialMessage: ''
+    specialMessage: '',
+    subdomain: ''
   });
 
   useEffect(() => {
@@ -111,7 +112,8 @@ const AdminPage = () => {
       venue: wedding.venue || '',
       ceremonyTime: wedding.ceremonyTime || '',
       receptionTime: wedding.receptionTime || '',
-      specialMessage: wedding.specialMessage || ''
+      specialMessage: wedding.specialMessage || '',
+      subdomain: wedding.subdomain || ''
     });
     setShowCreateForm(true);
   };
@@ -151,7 +153,8 @@ const AdminPage = () => {
       venue: '',
       ceremonyTime: '',
       receptionTime: '',
-      specialMessage: ''
+      specialMessage: '',
+      subdomain: ''
     });
   };
 
@@ -432,6 +435,28 @@ const AdminPage = () => {
                     placeholder={selectedWedding ? "Leave blank to keep current" : ""}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Subdomain (isteğe bağlı)
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      name="subdomain"
+                      value={formData.subdomain}
+                      onChange={handleInputChange}
+                      placeholder="gaziselcan"
+                      className="w-full border border-gray-300 rounded-l-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    />
+                    <div className="bg-gray-100 border border-l-0 border-gray-300 px-3 py-2 rounded-r-lg text-gray-600 text-sm">
+                      .myevent.gallery
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    QR kodu özel domain ile oluşturmak için subdomain girin
+                  </p>
                 </div>
 
                 <div>
