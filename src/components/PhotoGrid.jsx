@@ -83,9 +83,10 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode
               <img
                 src={thumbnailErrors[photo.id] ? photo.url : (photo.thumbnailUrl || photo.url || photo.src)}
                 alt={photo.title || `Wedding photo ${index + 1}`}
-                className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+                className={`w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-110 ${
                   loadingImages[photo.id] ? 'opacity-0' : 'opacity-100'
                 }`}
+                style={{ objectPosition: 'center center' }}
                 onError={(e) => {
                   if (!thumbnailErrors[photo.id] && e.target.src.includes('/thumbnail/')) {
                     handleThumbnailError(photo.id);
