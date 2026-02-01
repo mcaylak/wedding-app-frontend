@@ -186,7 +186,7 @@ const GalleryScreen = ({
                     <div key={photo.id} className="photo-card" style={{animationDelay: `${index * 0.1}s`}}>
                       <div className="photo-wrapper">
                         <img 
-                          src={`${API_BASE}/photos/download/${photo.id}?token=${token}`}
+                          src={`${API_BASE}/photos/thumbnail/${photo.id}?token=${token}`}
                           className="photo-image"
                           alt={photo.fileName}
                           loading="lazy"

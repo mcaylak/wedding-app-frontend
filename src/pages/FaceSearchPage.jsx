@@ -74,6 +74,7 @@ const FaceSearchPage = ({ authToken, weddingId }) => {
           const formattedResults = results.content.map((photo) => ({
             id: photo.id,
             url: `${API_BASE_URL}/photos/download/${photo.id}?token=${authToken}`,
+            thumbnailUrl: `${API_BASE_URL}/photos/thumbnail/${photo.id}?token=${authToken}`,
             title: photo.fileName || `Photo ${photo.id}`,
             confidence: 0.85 // Default confidence since backend doesn't return it
           }));

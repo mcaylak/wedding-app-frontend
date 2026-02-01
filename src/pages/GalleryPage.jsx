@@ -33,6 +33,7 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
         const formattedPhotos = data.content.map(photo => ({
           id: photo.id,
           url: `${API_BASE_URL}/photos/download/${photo.id}?token=${authToken}`,
+          thumbnailUrl: `${API_BASE_URL}/photos/thumbnail/${photo.id}?token=${authToken}`,
           title: photo.fileName,
           uploadDate: photo.createdAt,
           contentType: photo.contentType

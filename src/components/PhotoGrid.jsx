@@ -75,12 +75,11 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode
             
             {!imageErrors[photo.id] ? (
               <img
-                src={photo.url || photo.thumbnailUrl || photo.src}
+                src={photo.thumbnailUrl || photo.url || photo.src}
                 alt={photo.title || `Wedding photo ${index + 1}`}
                 className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
                   loadingImages[photo.id] ? 'opacity-0' : 'opacity-100'
                 }`}
-                style={{ maxWidth: '400px', maxHeight: '400px' }}
                 onError={() => handleImageError(photo.id)}
                 onLoad={() => handleImageLoad(photo.id)}
                 onLoadStart={() => handleImageStartLoading(photo.id)}

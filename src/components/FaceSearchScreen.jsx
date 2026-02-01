@@ -346,7 +346,7 @@ const FaceSearchScreen = ({
                 <div key={photo.id} className="photo-card">
                   <div className="photo-container">
                     <img
-                      src={`${API_BASE}/photos/download/${photo.id}?token=${token}`}
+                      src={`${API_BASE}/photos/thumbnail/${photo.id}?token=${token}`}
                       alt={photo.fileName}
                       className="photo-image"
                       onError={(e) => {
