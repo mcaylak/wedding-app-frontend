@@ -16,7 +16,7 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
       
       setLoading(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/photos/${weddingId}?page=0&size=50`, {
+        const response = await fetch(`${API_BASE_URL}/photos/${weddingId}?page=0&size=12`, {
           headers: {
             'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'

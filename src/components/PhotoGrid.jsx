@@ -2,13 +2,20 @@ import React, { useState } from 'react';
 
 const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode = false, selectedPhotos = [], onPhotoSelect }) => {
   const [imageErrors, setImageErrors] = useState({});
+  const [loadingImages, setLoadingImages] = useState({});
 
   const handleImageError = (photoId) => {
     setImageErrors(prev => ({ ...prev, [photoId]: true }));
+    setLoadingImages(prev => ({ ...prev, [photoId]: false }));
   };
 
   const handleImageLoad = (photoId) => {
     setImageErrors(prev => ({ ...prev, [photoId]: false }));
+    setLoadingImages(prev => ({ ...prev, [photoId]: false }));
+  };
+
+  const handleImageStartLoading = (photoId) => {
+    setLoadingImages(prev => ({ ...prev, [photoId]: true }));
   };
 
   if (loading) {
@@ -59,13 +66,23 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode
           
           {/* Image container */}
           <div className="relative w-full h-full rounded-xl overflow-hidden">
+            {/* Image placeholder/skeleton */}
+            {loadingImages[photo.id] && (
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse flex items-center justify-center">
+                <div className="text-gray-400 text-2xl">📷</div>
+              </div>
+            )}
+            
             {!imageErrors[photo.id] ? (
               <img
                 src={photo.url || photo.thumbnailUrl || photo.src}
                 alt={photo.title || `Wedding photo ${index + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+                  loadingImages[photo.id] ? 'opacity-0' : 'opacity-100'
+                }`}
                 onError={() => handleImageError(photo.id)}
                 onLoad={() => handleImageLoad(photo.id)}
+                onLoadStart={() => handleImageStartLoading(photo.id)}
                 loading="lazy"
               />
             ) : (
