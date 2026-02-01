@@ -9,40 +9,52 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [pagination, setPagination] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 0,
+    totalElements: 0
+  });
+
+  const fetchPhotos = async (page = 0) => {
+    if (!authToken || !weddingId) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/photos/${weddingId}?page=${page}&size=${pagination.size}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const formattedPhotos = data.content.map(photo => ({
+          id: photo.id,
+          url: `${API_BASE_URL}/photos/download/${photo.id}?token=${authToken}`,
+          title: photo.fileName,
+          uploadDate: photo.createdAt,
+          contentType: photo.contentType
+        }));
+        setPhotos(formattedPhotos);
+        setPagination({
+          page: data.page,
+          size: data.size,
+          totalPages: data.totalPages,
+          totalElements: data.totalElements
+        });
+      } else {
+        console.error('Failed to fetch photos');
+      }
+    } catch (error) {
+      console.error('Error fetching photos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchPhotos = async () => {
-      if (!authToken || !weddingId) return;
-      
-      setLoading(true);
-      try {
-        const response = await fetch(`${API_BASE_URL}/photos/${weddingId}?page=0&size=12`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          const formattedPhotos = data.content.map(photo => ({
-            id: photo.id,
-            url: `${API_BASE_URL}/photos/download/${photo.id}?token=${authToken}`,
-            title: photo.fileName,
-            uploadDate: photo.createdAt,
-            contentType: photo.contentType
-          }));
-          setPhotos(formattedPhotos);
-        } else {
-          console.error('Failed to fetch photos');
-        }
-      } catch (error) {
-        console.error('Error fetching photos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     fetchPhotos();
   }, [authToken, weddingId]);
 
@@ -237,6 +249,58 @@ const GalleryPage = ({ onBackToHome, authToken, weddingId }) => {
           selectedPhotos={selectedPhotos}
           onPhotoSelect={togglePhotoSelection}
         />
+        
+        {/* Pagination */}
+        {!loading && pagination.totalPages > 1 && (
+          <div className="flex justify-center py-8">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => fetchPhotos(Math.max(0, pagination.page - 1))}
+                disabled={pagination.page === 0}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  pagination.page === 0 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-white/20 backdrop-blur-md border border-white/30 text-gray-700 hover:bg-white/30'
+                }`}
+              >
+                ← Önceki
+              </button>
+              
+              <div className="flex space-x-1">
+                {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                  const pageNum = pagination.page <= 2 ? i : pagination.page - 2 + i;
+                  if (pageNum >= pagination.totalPages) return null;
+                  
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => fetchPhotos(pageNum)}
+                      className={`w-10 h-10 rounded-lg transition-colors ${
+                        pagination.page === pageNum
+                          ? 'bg-indigo-500 text-white'
+                          : 'bg-white/20 backdrop-blur-md border border-white/30 text-gray-700 hover:bg-white/30'
+                      }`}
+                    >
+                      {pageNum + 1}
+                    </button>
+                  );
+                })}
+              </div>
+              
+              <button
+                onClick={() => fetchPhotos(Math.min(pagination.totalPages - 1, pagination.page + 1))}
+                disabled={pagination.page >= pagination.totalPages - 1}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  pagination.page >= pagination.totalPages - 1
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-white/20 backdrop-blur-md border border-white/30 text-gray-700 hover:bg-white/30'
+                }`}
+              >
+                Sonraki →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Photo Modal */}
