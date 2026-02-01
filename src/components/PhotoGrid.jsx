@@ -80,10 +80,12 @@ const PhotoGrid = ({ photos = [], loading = false, onPhotoClick, isSelectionMode
                 className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
                   loadingImages[photo.id] ? 'opacity-0' : 'opacity-100'
                 }`}
+                style={{ maxWidth: '400px', maxHeight: '400px' }}
                 onError={() => handleImageError(photo.id)}
                 onLoad={() => handleImageLoad(photo.id)}
                 onLoadStart={() => handleImageStartLoading(photo.id)}
                 loading="lazy"
+                decoding="async"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-blush-rose/30 to-champagne-gold/30 flex items-center justify-center">
